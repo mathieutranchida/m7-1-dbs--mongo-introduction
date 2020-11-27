@@ -142,11 +142,11 @@ const updateGreeting = async (req, res) => {
 
     const _id = req.params._id;
     const query = { _id };
-    const newValues = { $set: { hello } };
+    const newValues = { $set: { hello: req.body.hello } };
 
     const result = await db.collection("greetings").updateOne(query, newValues);
-    assert.equal(1, results.matchedCount);
-    assert.equal(1, results.modifiedCount);
+    assert.equal(1, result.matchedCount);
+    assert.equal(1, result.modifiedCount);
 
     // close the connection to the database server
     client.close();
@@ -154,7 +154,7 @@ const updateGreeting = async (req, res) => {
 
     res.status(200).json({
       status: 200,
-      data: result,
+      data: { _id, result },
     });
   } catch (err) {
     res.status(500).json({ status: 500, data: req.body, message: err.message });

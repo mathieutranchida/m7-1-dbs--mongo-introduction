@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectID } = require("mongodb");
 const assert = require("assert");
 require("dotenv").config();
 
@@ -141,7 +141,7 @@ const updateGreeting = async (req, res) => {
     console.log("connected!");
 
     const _id = req.params._id;
-    const query = { _id };
+    const query = { _id: ObjectID(_id) };
     const newValues = { $set: { hello: req.body.hello } };
 
     const result = await db.collection("greetings").updateOne(query, newValues);
